@@ -1,0 +1,67 @@
+function [Pc,Arem,IsPosDef,IsRemediated] = Pc2D_Foster(r1,v1,cov1,r2,v2,cov2,HBR,RelTol)
+    HBRType = 'circle';
+
+    covcomb = cov1(1:3,1:3) + cov2(1:3,1:3);
+    
+    r = r1 - r2;
+    v = v1 - v2;
+    h = cross(r,v);
+    
+    y = v / norm(v);
+    z = h / norm(h);
+    x = cross(y,z);
+    
+    eci2xyz = [x; y; z];
+    
+    covcombxyz = eci2xyz * covcomb * eci2xyz';
+    
+    Cp = [1 0 0; 
+          0 0 1] * covcombxyz * [1 0 0;
+                                 0 0 1]';
+    
+    Lclip = (1e-4*HBR)^2;
+    [Lrem,~,~,~,IsRemediated,Adet,Ainv,Arem] = CovRemEigValClip(Cp,Lclip);
+    IsPosDef = logical(min(Lrem)>0
+    
+    % CALCULATE DOUBLE INTEGRAL
+    
+    % Center of HBR in the relative encounter plane
+    x0 = norm(r);
+    z0 = 0;
+    
+    % Inverse of the Cp matrix
+    C  = Ainv;
+    
+    % Absolute Tolerance
+    AbsTol = 1e-13;
+
+    % Integrand 
+    Integrand = @(x,z)exp(-1/2*(C(1,1).*x.^2+C(1,2)*z.*x+C(2,1)*z.*x+C(2,2)*z.^2));
+    
+    upper_semicircle = @(x)( sqrt(HBR.^2 - (x-x0).^2) .* (abs(x-x0)<=HBR));
+    lower_semicircle = @(x)(-sqrt(HBR.^2 - (x-x0).^2) .* (abs(x-x0)<=HBR));
+    Pc = 1/(2*pi)*1/sqrt(Adet)*quad2d(Integrand,x0-HBR,x0+HBR,lower_semicircle,upper_semicircle,'AbsTol',AbsTol,'RelTol',RelTol);
+            
+    
+return  
+    
+
+% ----------------- END OF CODE ------------------
+%
+% Please record any changes to the software in the change history 
+% shown below:
+%
+% ----------------- CHANGE HISTORY ------------------
+% Developer      |    Date    |     Description
+% ---------------------------------------------------
+% D. Plakalovic  | Mar - 2013 |  Initial Development
+% D. Plakalovic  | 03-06-2013 |  Checked for functionality and
+%                                developed validation cases (found in the
+%                                Examples/Validation section)
+% R. Ghrist      | 03-07-2013 |  Added clarifying statement to comments
+% D. Plakalovic  | 10-10-2013 |  Revised function to use quad2d instead of
+%                                dblquad
+% L. Johnson     | 05-25-2018 |  Added eigenvalue clipping remediation for 
+%                                NPD covariances. Added a non-positive
+%                                definite flag (if remediation fails) and a
+%                                remediation flag.

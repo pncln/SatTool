@@ -1,0 +1,1 @@
+matlab -nosplash -nodesktop -sd d:\Files\Work\azercosmos\Tasks\Collision -r "run('.\Init.m');"

@@ -1,0 +1,4 @@
+function x = Rev(number)
+    fprintf("Number: "+numbe)
+    x= number -floor(number/360.0)*360 ;
+end
