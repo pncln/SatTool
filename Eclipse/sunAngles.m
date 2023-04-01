@@ -37,6 +37,8 @@ GMST0=(L+180);
 
 UT=Rev(0*180+RA-GMST0-SatLon+180)/360;
 dcalc=floor(dcalc)+UT;
+
+% DEBUG
 fprintf("UT2: " +UT+"\n");
 fprintf("DCALC: " + dcalc+"\n");
 end
