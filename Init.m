@@ -5,14 +5,21 @@
 
 % Add Paths
 fprintf("====================== DEBUG ======================\n");
-Paths();
+% Debug in the following paths/files:
+% ./Eclipse/sunAngles.m
+% ./Eclipse/sunDeclm
+
+Paths(); % Include paths
 
 % Specify date
 StartTime = datetime("2022-09-29T04:29:42"); % TLE DATE
 PrevTime = datetime("2022-09-28T04:29:42"); % PREV TLE DATE
 
-StopTime = StartTime + hours(4);
-PrevStopTime = PrevTime + hours(4);
+% Simulation Interval
+SimulationTime = 4;
+
+StopTime = StartTime + hours(SimulationTime);
+PrevStopTime = PrevTime + hours(SimulationTime);
 SampleTime = 30;
 satscene = satelliteScenario(StartTime, StopTime, ...
     SampleTime);
