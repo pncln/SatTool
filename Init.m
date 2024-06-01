@@ -128,7 +128,7 @@ HBR = 0.020;
 Arem = Arem / 10e12;
 x1 = r1 ./ v1;
 x2 = r2 ./ v2;
-[ dt ] = FindNearbyCA(x1, x2, 'LINEAR', 10e-2);
+% [ dt ] = FindNearbyCA(x1, x2, 'LINEAR', 10e-2);
 
 fprintf("===================== RESULTS =====================\n");
     fprintf("[General] Date: " + datestr(StartTime) + "\n");
