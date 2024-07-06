@@ -19,10 +19,6 @@ function DetectConstellation(SampleTime, stationList, ...
             numdets(:,i) = numdeti;
             dets(:,i) = addMeasurementParams(dets(:,i), numdets(:,i), stationList(i));
         end
-
-%         targets1 = assembleRadarInputs(station1, plats(step, :));
-%         [dets1, numdets1] = radar1(targets1, time);
-%         dets1 = addMeasurementParams(dets1, numdets1, station1);
     
         detections = dets;
         updateRadarPlots(radarplt, targets, dets);
